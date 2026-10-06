@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | Secure Storage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-[#080d16] text-slate-100 antialiased selection:bg-emerald-300 selection:text-slate-950">
+    <div class="min-h-screen lg:flex">
+        <aside class="relative flex w-full flex-col overflow-hidden border-b border-slate-800/80 bg-slate-900 px-6 py-5 lg:min-h-screen lg:w-72 lg:shrink-0 lg:border-b-0 lg:border-r lg:px-7 lg:py-8">
+            <div class="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-emerald-400/10 blur-3xl"></div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-400 text-slate-950">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 5 6v5c0 4.5 2.9 8.5 7 10 4.1-1.5 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm font-semibold text-white">Secure Storage</p>
+                        <p class="text-xs text-slate-500">Personal workspace</p>
+                    </div>
+                </div>
+                <a href="{{ url_for('logout') }}" class="rounded-lg p-2 text-slate-400 transition hover:bg-slate-800 hover:text-white lg:hidden" aria-label="Logout">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6"/></svg>
+                </a>
+            </div>
+            <nav class="mt-12 space-y-2" aria-label="Main navigation">
+                <a href="{{ url_for('user_dashboard') }}" class="flex items-center gap-3 rounded-xl bg-emerald-400/10 px-3 py-3 text-sm font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-400/20">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 13h6V4H4v9Zm0 7h6v-4H4v4Zm10 0h6v-9h-6v9Zm0-16v4h6V4h-6Z"/></svg>
+                    My files
+                </a>
+            </nav>
+            <a href="{{ url_for('logout') }}" class="mt-3 hidden items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-slate-400 transition hover:bg-slate-800 hover:text-white lg:flex">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6"/></svg>
+                Logout
+            </a>
+            <div class="mt-auto hidden border-t border-slate-800 pt-6 lg:block">
+                <p class="truncate text-sm font-medium text-slate-200">{{ session['email'] if session['email'] else "Guest (Error : No Session Data)" }}</p>
+                <p class="mt-1 text-xs text-slate-500">Standard account</p>
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-hidden bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.08),_transparent_28rem)]">
+            <div class="mx-auto max-w-7xl px-5 py-8 sm:px-8 lg:px-12 lg:py-12">
+                <div class="flex flex-col gap-6 border-b border-slate-800 pb-8 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-emerald-400">Your workspace</p>
+                        <h1 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">My files</h1>
+                        <p class="mt-2 text-sm leading-6 text-slate-400">Welcome, {{ session['email'] if session['email'] else "Guest (Error : No Session Data)" }}</p>
+                    </div>
+                    <div class="rounded-xl border border-slate-800 bg-slate-900 px-4 py-3">
+                        <p class="text-xs text-slate-500">Files available</p>
+                        <p class="mt-1 text-xl font-semibold text-white">{{ files|length }}</p>
+                    </div>
+                </div>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <div class="mt-6 space-y-3" role="status">
+                    {% for category, message in messages %}
+                    <div class="rounded-xl border px-4 py-3 text-sm {% if category == 'success' %}border-emerald-400/20 bg-emerald-400/10 text-emerald-300{% else %}border-rose-400/20 bg-rose-400/10 text-rose-300{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+                <section class="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+                    <div class="overflow-hidden rounded-2xl border border-slate-800/80 bg-slate-900/80 shadow-2xl shadow-black/10">
+                        <div class="flex items-center justify-between border-b border-slate-800 px-5 py-4 sm:px-6">
+                            <div>
+                                <h2 class="font-semibold text-white">Uploaded files</h2>
+                                <p class="mt-1 text-xs text-slate-500">Files shared with your account</p>
+                            </div>
+                            <span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">{{ files|length }} total</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full min-w-[560px] text-left text-sm">
+                                <thead class="bg-slate-950/50 text-xs uppercase tracking-wider text-slate-500">
+                                    <tr>
+                                        <th class="px-5 py-4 font-medium sm:px-6">File name</th>
+                                        <th class="px-5 py-4 font-medium">Status</th>
+                                        <th class="px-5 py-4 text-right font-medium sm:px-6">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-800">
+                                    {% for file in files %}
+                                    <tr class="transition hover:bg-slate-800/40">
+                                        <td class="px-5 py-4 sm:px-6">
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-800 text-slate-400">
+                                                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                                                </div>
+                                                <span class="max-w-[260px] truncate font-medium text-slate-200">{{ file.f_path.rsplit('/', 1)[-1].rsplit('\\', 1)[-1] }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="px-5 py-4">
+                                            <span class="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300"><span class="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>Available</span>
+                                        </td>
+                                        <td class="px-5 py-4 text-right sm:px-6">
+                                            <a href="{{ url_for('download_file', file_id=file.f_id) }}" class="inline-flex items-center gap-2 rounded-lg bg-emerald-400 px-3 py-2 text-xs font-semibold text-slate-950 transition hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-900">
+                                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>
+                                                Download
+                                            </a>
+                                            {% if file.owner_id == session['id'] %}
+                                            <form action="{{ url_for('share_file', file_id=file.f_id) }}" method="POST" class="mt-2 flex justify-end gap-2">
+                                                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                                                <input type="email" name="recipient_email" required placeholder="user@example.com" aria-label="Recipient email" class="w-40 rounded-lg border border-slate-700 bg-slate-950 px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-400">
+                                                <button type="submit" class="rounded-lg border border-slate-700 px-2 py-1.5 text-xs font-semibold text-slate-200 hover:border-emerald-400/50 hover:text-emerald-300">Share</button>
+                                            </form>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="3" class="px-6 py-14 text-center">
+                                            <p class="font-medium text-slate-300">You have no files assigned to you.</p>
+                                            <p class="mt-1 text-sm text-slate-500">Shared files will appear here.</p>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <section class="rounded-2xl border border-slate-800/80 bg-slate-900/60 p-6 shadow-2xl shadow-black/10">
+                        <div class="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+                        </div>
+                        <h2 class="mt-5 font-semibold text-white">Secure upload area</h2>
+                        <p class="mt-2 text-sm leading-6 text-slate-400">Add a file to your private workspace. Maximum file size: 16 MB.</p>
+                        <form action="{{ url_for('user_upload_file') }}" method="POST" enctype="multipart/form-data" class="mt-6">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                            <label for="user-file" class="group flex cursor-pointer flex-col items-center rounded-xl border border-dashed border-slate-700 bg-slate-950/60 px-4 py-8 text-center transition hover:border-emerald-400/60 hover:bg-emerald-400/[0.03]">
+                                <svg class="h-7 w-7 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/></svg>
+                                <span class="mt-3 text-sm font-medium text-slate-300 group-hover:text-emerald-200">Choose a file</span>
+                                <span id="file-name" class="mt-1 max-w-full truncate text-xs text-slate-500">Any file type</span>
+                                <input id="user-file" name="file" type="file" required class="sr-only">
+                            </label>
+                            <button type="submit" class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-400 px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-300 focus:ring-offset-2 focus:ring-offset-slate-900">
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 16V3m0 0L8 7m4-4 4 4M5 21h14"/></svg>
+                                Upload file
+                            </button>
+                        </form>
+                    </section>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script>
+        const fileInput = document.getElementById('user-file');
+        const fileName = document.getElementById('file-name');
+        fileInput.addEventListener('change', () => {
+            fileName.textContent = fileInput.files[0]?.name || 'Any file type';
+        });
+    </script>
+</body>
+</html>

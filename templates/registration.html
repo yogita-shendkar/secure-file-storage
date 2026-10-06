@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Secure File System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
+<body>
+    <div class="register-container">
+        <h2>Create Account</h2>
+        <form action="/register" method="POST">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Create Password" minlength="8" required>
+            <button type="submit" class="btn-reg">Register</button>
+        </form>
+        <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+</body>
+</html>

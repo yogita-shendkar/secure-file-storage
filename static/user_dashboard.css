@@ -1,0 +1,116 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #dbeafe 0%, #ffffff 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Aligns card to top with padding */
+    padding-top: 60px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 24px;
+    padding: 40px;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    font-size: 26px;
+    color: #111;
+    margin-bottom: 5px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+a[href*="logout"] {
+    color: #ff4d4d;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+a[href*="logout"]:hover {
+    background: rgba(255, 77, 77, 0.1);
+}
+
+h3 {
+    margin: 30px 0 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none !important; /* Overrides the border="1" attribute */
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+thead tr {
+    background-color: #1a1a1a !important; /* Matching your dark theme */
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: #444;
+    font-size: 15px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.btn-download {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #1a1a1a;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-download:hover {
+    background-color: rgb(57, 157, 57); /* Your green accent */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(57, 157, 57, 0.2);
+}
+
+td[colspan="3"] {
+    padding: 40px;
+    color: #999;
+    font-style: italic;
+}
